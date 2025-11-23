@@ -3,6 +3,21 @@ name: create-svg-from-prompt
 description: Generate an SVG of a user-requested image or scene
 ---
 
+## Setup
+
+if `autotrace` is not available in the environment, then install it with the following command:
+
+```bash
+sudo apt update
+sudo apt install git build-essential intltool imagemagick libmagickcore-dev pstoedit libpstoedit-dev autopoint
+git clone https://github.com/autotrace/autotrace.git
+cd autotrace
+./autogen.sh
+LD_LIBRARY_PATH=/usr/local/lib ./configure --prefix=/usr
+make
+sudo make install
+```
+
 ## Core Workflow
 
 When the user prompts the model to generate an SVG of and image or scene:

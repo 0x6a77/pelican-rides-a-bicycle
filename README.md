@@ -101,6 +101,12 @@ here we update the claude-code context to include instructions that make contain
 curl https://raw.githubusercontent.com/dagger/container-use/main/rules/agent.md >> CLAUDE.md
 ```
 
+now we need to setup the gemini api key:
+
+```
+container-use config env set GEMINI_API_KEY <the key value>
+```
+
 this is how we invoke claude-code to prompt us before it executes certain container-use operations. (don't worry, it will ask you at the prompt how to handle these operations going forward if you find this too onerous. the general idea is that you should not let a gen/ai run wild when it has potential access to untrusted inputs.)
 
 ```
