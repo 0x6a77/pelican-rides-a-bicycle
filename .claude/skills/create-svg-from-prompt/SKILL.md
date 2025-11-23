@@ -32,6 +32,6 @@ curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-
 
 **Arguments from prompt:**
 - `<GEMINI_API_KEY>`: The Gemini API key gotten from the environment variable "GEMINI_API_KEY"
-- `<PROMPT>`: A Gemini image prompt generated from the user's requested scene
+- `<PROMPT>`: A Gemini image prompt generated from the user's requested scene. stay close to the user prompt and do not add extra instructions and descriptions
 - `<OUTPUT_FILE>`: An 8-30 character filename based on the image the user wants
 
