@@ -2,7 +2,7 @@
 
 spoiler alert! this is what happens when you ask claude-code to draw an svg of a pelican riding a bicycle:
 
-![pelican-rides-a-bicycle](./pelican-rides-a-bicycle.png)
+![pelican-rides-a-bicycle](./pelican-bicycle.svg)
 
 this repo combines two simple ideas in claude-code to accomplish an otherwise difficult llm task:
 
@@ -27,11 +27,7 @@ claude --allowedTools mcp__container-use__environment_checkpoint,mcp__container-
 
 at the prompt type:
 
-```
-generate an svg of a pelican riding a bicycle in half moon bay. make it photorealistic and accurate to the half moon bay area. e.g. place it near the pigeon point lighthouse. our pelican has no helmet or basket of fish. include joggers and other cyclists on the trail with our pelican.
-```
-
-
+> generate an svg of a pelican riding a bicycle.
 
 ## setup
 
@@ -113,3 +109,10 @@ this is how we invoke claude-code to prompt us before it executes certain contai
 claude --allowedTools mcp__container-use__environment_checkpoint,mcp__container-use__environment_create,mcp__container-use__environment_add_service,mcp__container-use__environment_file_delete,mcp__container-use__environment_file_list,mcp__container-use__environment_file_read,mcp__container-use__environment_file_write,mcp__container-use__environment_open,mcp__container-use__environment_run_cmd,mcp__container-use__environment_update
 ```
 
+## some more fun
+
+### near pelican point
+
+> generate an svg of a pelican riding a bicycle with a basket of fish and no helmet during the day in half moon bay near pigeon point lighthouse. make it photorealistic and accurate to the half moon bay area.
+
+![pelican-rides-a-bicycle](./pelican-fish-basket.svg)

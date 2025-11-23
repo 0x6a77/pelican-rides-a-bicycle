@@ -27,7 +27,7 @@ When the user prompts the model to generate an SVG of and image or scene:
 To generate an SVG of an image or scene use Google Gemini and autotrace:
 
 ```bash
-curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent" -H "x-goog-api-key: <GEMINI_API_KEY>" -H "Content-Type: application/json" -d '{ "contents": [{ "parts": [ {"text": "<IMAGE_PROMPT>"}]}]}' | grep -o '"data": "[^"]*"' | cut -d'"' -f4 | base64 --decode | autotrace -output-format svg -color-count 10 -corner-threshold 60 -line-threshold 0.5 -filter-iterations 4 -despeckle-level 2 -despeckle-tightness 2.0 -error-threshold 2.0 -output-file <OUTPUT_FILE>.svg
+curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent" -H "x-goog-api-key: <GEMINI_API_KEY>" -H "Content-Type: application/json" -d '{ "contents": [{ "parts": [ {"text": "<IMAGE_PROMPT>"}]}]}' | grep -o '"data": "[^"]*"' | cut -d'"' -f4 | base64 --decode | autotrace -output-format svg -despeckle-level 10 -despeckle-tightness 2.0 -output-file <OUTPUT_FILE>.svg
 ```
 
 **Arguments from prompt:**
