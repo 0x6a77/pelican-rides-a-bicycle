@@ -2,7 +2,7 @@
 
 Spoiler alert! This is what happens when you ask Claude-Code to draw an SVG of a pelican riding a bicycle:
 
-![pelican-rides-a-bicycle](./pelican-bicycle.svg)
+![pelican-rides-a-bicycle](./images/pelican-bicycle.svg)
 
 This repo combines two simple ideas in Claude-Code to accomplish an otherwise difficult LLM task:
 
@@ -113,10 +113,10 @@ At the prompt type:
 
 > Generate an SVG of a pelican riding a bicycle with a basket of fish and no helmet during the day in half moon bay near pigeon point lighthouse. Make it photorealistic and accurate to the half moon bay area.
 
-![pelican-rides-a-bicycle](./pelican-fish-basket.svg)
+![pelican-rides-a-bicycle](./images/pelican-fish-basket.svg)
 
 ### GGNP Poster
 
 > Generate an svg of a pelican riding a bicycle with a design similar to the golden gate national parks poster from the mid 90s. make sure the sky is blue, the bridge is red and pelican stands out.
 
-![pelican-rides-a-bicycle](./pelican-golden-gate.svg)
+![pelican-rides-a-bicycle](./images/pelican-golden-gate.svg)
