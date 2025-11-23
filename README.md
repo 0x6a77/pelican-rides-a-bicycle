@@ -57,6 +57,20 @@ git init
 
 #### sandboxing
 
+to enable claude-code [sandboxing](https://code.claude.com/docs/en/sandboxing) we added `settings.json` with the following content:
+
+```
+{
+  "env": {
+	"INHERIT_FROM_SHELL": "true",
+	"GEMINI_API_KEY": "${GEMINI_API_KEY}"
+  },
+  "sandbox": {
+	"enabled": true,
+  }
+}
+```
+
 #### agent-skills
 
 this is how we setup or svg-drawing skill:
@@ -78,7 +92,7 @@ brew install dagger/tap/container-use
 here we add the container-use mcp server to claude-code.
 
 ```
-claude mcp add container-use -- container-use stdio
+claude mcp add  --scope project container-use -- container-use stdio
 ```
 
 here we update the claude-code context to include instructions that make container-use more effective.
