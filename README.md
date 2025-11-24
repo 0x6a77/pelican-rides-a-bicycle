@@ -1,21 +1,38 @@
 ## Pelican Rides a Bicycle
 
-Spoiler alert! This is what happens when you ask Claude-Code to draw an SVG of a pelican riding a bicycle:
+> [!NOTE]
+>This is what happens when you ask Claude-Code to generate an SVG of a pelican riding a bicycle!
 
 ![pelican-rides-a-bicycle](./images/pelican-bicycle.svg)
 
-This repo combines two simple ideas in Claude-Code to accomplish an otherwise difficult LLM task:
+## Claude Code Skill
 
-1. Computational irreducibility from this [2023 Stephen Wolfram essay](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/#surely-a-network-thats-big-enough-can-do-anything)
-2. Tool invocation
+LLMs typically produce broken SVGs for complex spatial tasks—overlapping 
+geometry, impossible proportions, physically implausible compositions. This 
+happens because LLMs predict tokens but don't *compute* spatial relationships.
+
+The `create-svg-from-prompt` skill solves this by combining:
+1. Image generation capability (Google Gemini)
+2. Natural language understanding (Claude Code)
+3. Iterative validation and refinement (computational tools)
+
+This demonstrates that tool-augmented AI can tackle problems requiring actual 
+computation, not just pattern matching.
+
+### Underlying Idea
+
+This repo combines two simple ideas in a Claude-Code skill to accomplish an otherwise difficult LLM task:
+
+1. Join two models: Google Gemini and Claude Code
+2. Tool invocation to handle computational irreducibility (from this [2023 Stephen Wolfram essay](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/#surely-a-network-thats-big-enough-can-do-anything))
 
 Wolfram writes:
 
-> So how is it, then, that something like ChatGPT can get as far as it does with language? The basic answer, I think, is that language is at a fundamental level somehow simpler than it seems. And this means that ChatGPT—even with its ultimately straightforward neural net structure—is successfully able to “capture the essence” of human language and the thinking behind it. And moreover, in its training, ChatGPT has somehow “implicitly discovered” whatever regularities in language (and thinking) make this possible.
+> Yes, we could memorize lots of specific examples of what happens in  some particular computational system. And maybe we could even see some  (“computationally reducible”) patterns that would allow us to do a  little generalization. But the point is that computational  irreducibility means that we can never guarantee that the unexpected  won’t happen—and it’s only by explicitly doing the computation that you  can tell what actually happens in any particular case.
+>
+> And in the end there’s just a fundamental tension between  learnability and computational irreducibility. Learning involves in  effect [compressing data by leveraging regularities](https://www.wolframscience.com/nks/chap-10--processes-of-perception-and-analysis/). But computational irreducibility implies that ultimately there’s a limit to what regularities there may be.
 
-The essay, and especially that section, suggests that maybe LLMs are a front-end language processor for what human(oid)s want to accomplish, but for a generally intelligent machine it's not enough.
-
-The idea here is that tools and agents are a partial way forward: if we combined them in clever ways we can make new gains on currently unsolvable problems. (Even agents are probably a partial solution. There is so much work ahead! E.g. if we solve spatial intelligence, will it be enough? It feels like intelligence is motivated by [physical reality](https://josevillegas.substack.com/p/plato-aristotle-and-chatgpt): even if we solve the [grasping problem](https://arxiv.org/abs/1806.09266) generally, will the machine know what every human child knows: don't grasp a cup covered in thorns?)
+The essay, and especially that section, suggests that maybe LLMs are a language processor, but for a generally intelligent machine it's not enough. Perhaps tools and agents are a partial way forward: if we combined them in clever ways we can make new gains on currently unsolvable problems.
 
 ## Setup
 
@@ -45,22 +62,22 @@ To enable Claude-Code [sandboxing](https://code.claude.com/docs/en/sandboxing) w
 
 ```
 {
-"env": {
-"INHERIT_FROM_SHELL": "true",
-"GEMINI_API_KEY": "${GEMINI_API_KEY}"
-},
-"sandbox": {
-"enabled": true,
-}
+	"env": {
+    "INHERIT_FROM_SHELL": "true",
+    "GEMINI_API_KEY": "${GEMINI_API_KEY}"
+  },
+  "sandbox": {
+  "enabled": true,
+  }
 }
 ```
 
 #### Agent-Skills
 
-This is how we setup our SVG-drawing skill:
+The `create-svg-from-prompt` already exists in the repo and is ready to use:
 
 ```
-mkdir -p .claude/skills/draw-svg
+.claude/skills/create-svg-from-prompt/SKILL.md
 ```
 
 ### Container-Use
@@ -89,15 +106,9 @@ Now we need to setup the Gemini API key:
 container-use config env set GEMINI_API_KEY <the key value>
 ```
 
-This is how we invoke Claude-Code to prompt us before it executes certain Container-Use operations. (Don't worry, it will ask you at the prompt how to handle these operations going forward if you find this too onerous. The general idea is that you should not let a gen/ai run wild when it has potential access to untrusted inputs.)
+## Run It!
 
-```
-claude --allowedTools mcp__container-use__environment_checkpoint,mcp__container-use__environment_create,mcp__container-use__environment_add_service,mcp__container-use__environment_file_delete,mcp__container-use__environment_file_list,mcp__container-use__environment_file_read,mcp__container-use__environment_file_write,mcp__container-use__environment_open,mcp__container-use__environment_run_cmd,mcp__container-use__environment_update
-```
-
-## Do the Thing!
-
-Start Claude-Code (using container-use mcp restrictions):
+Invoke Claude-Code with Container-Use protections. (Container-Use will prompt you to verify each operation before execution,  preventing unintended actions by the AI agent.)
 
 ```
 claude --allowedTools mcp__container-use__environment_checkpoint,mcp__container-use__environment_create,mcp__container-use__environment_add_service,mcp__container-use__environment_file_delete,mcp__container-use__environment_file_list,mcp__container-use__environment_file_read,mcp__container-use__environment_file_write,mcp__container-use__environment_open,mcp__container-use__environment_run_cmd,mcp__container-use__environment_update
@@ -107,7 +118,20 @@ At the prompt type:
 
 > Generate an SVG of a pelican riding a bicycle.
 
-## Some More Fun
+## How It Works
+
+When you prompt "Generate an SVG of a pelican riding a bicycle":
+
+1. Claude Code interprets your natural language request
+2. Gemini generates an initial image based on the prompt
+3. Autotrace converts the bitmap to SVG through the iterative path fitting optimization process that fits Bezier curves to pixel data
+4. Save the final SVG
+
+The path fitting step is where computational irreducibility matters most:  there's no way to predict optimal SVG paths without actually running the  iterative curve-fitting algorithm. Gemini provides the spatial intelligence  (trained on spatially correct images to understand what a "pelican on a  bicycle" looks like), while autotrace handles the computational optimization  (fitting precise Bezier curves to the bitmap pixels).
+
+This multi-step approach solves what single-model LLMs cannot: generating geometrically valid, visually accurate SVGs for complex spatial prompts.
+
+## More Examples
 
 ### Near Pelican Point
 
