@@ -1,7 +1,7 @@
 ## Pelican Rides a Bicycle
 
 > [!NOTE]
->This is what happens when you ask Claude-Code to generate an SVG of a pelican riding a bicycle!
+> This is what happens when you ask Claude-Code to generate an SVG of a pelican riding a bicycle!
 
 ![pelican-rides-a-bicycle](./images/pelican-bicycle.svg)
 
@@ -33,9 +33,31 @@ Wolfram writes:
 
 The essay, and especially that section, suggests that transformers are good language processors, but for a generally intelligent machine it's not enough. Perhaps tools and agents are a partial way forward: if we combined them in clever ways we can make new gains on currently unsolvable problems.
 
-## How to Use This Skill
+## Prerequisites
 
-To try the skill for yourself, you can simply clone this repo and run Claud Code in the cloned directory.
+### Install the Following
+
+- [Install Docker](https://docs.docker.com/engine/install/)
+- [Install Claude Code](https://code.claude.com/docs/en/setup)
+- [Install Container-Use](https://container-use.com/quickstart)
+- [Generate a Gemini API key](https://ai.google.dev/gemini-api/docs/api-key)
+
+### Google Gemini Config
+
+Configure the Gemini API key in Container-Use:
+
+```
+container-use config env set GEMINI_API_KEY <the key value>
+```
+
+### About Container-Use
+
+[Container-Use](https://container-use.com/quickstart) is from Docker creator Solomon Hykes. It allows you to isolate and sandbox your work so that gen/AI doesn't mess with your computer directly. It also allows you to run multiple experiments in parallel and merge back the results you want to keep.
+
+
+## Quick Start
+
+To try the skill for yourself, you can simply clone this repo and run Claude Code in the cloned directory.
 
 ```bash
 git clone https://github.com/0x6a77/pelican-rides-a-bicycle
@@ -45,93 +67,10 @@ cd pelican-rides-a-bicycle
 claude --allowedTools mcp__container-use__environment_checkpoint,mcp__container-use__environment_create,mcp__container-use__environment_add_service,mcp__container-use__environment_file_delete,mcp__container-use__environment_file_list,mcp__container-use__environment_file_read,mcp__container-use__environment_file_write,mcp__container-use__environment_open,mcp__container-use__environment_run_cmd,mcp__container-use__environment_update
 ```
 
+> [!NOTE]
+> [This page](https://container-use.com/quickstart#:~:text=Trust%20Only%20Container%20Use%20Tools%20(Optional)) explains why `container-use` uses the `--allowedTools` argument.
+
 Then at the prompt, type `Generate an SVG of a pelican riding a bicycle`
-
-## How to Build This Skill
-
-These instruction show how we built the Claude Code skill from scratch.
-
-The setup uses [Docker](https://formulae.brew.sh/formula/docker), [Container-Use](https://container-use.com/), Claude-Code [agent-skills](https://code.claude.com/docs/en/skills#agent-skills) and Claude-Code [sandboxing](https://code.claude.com/docs/en/sandboxing#sandboxing). Only the installation of Docker is platform dependent, this skill will work consistently on MacOS, Windows and Linux due to the use of `container-use` which not only sandboxes Claude Code from your local machine, it standardizes on Linux to run.
-
-### Docker
-
-The way we install Docker:
-
-```
-brew install docker
-```
-
-### Git
-
-```
-mkdir pelican-rides-a-bicycle
-cd  pelican-rides-a-bicycle
-git init
-```
-
-### Claude-Code
-
-#### Sandboxing
-
-To enable Claude-Code [sandboxing](https://code.claude.com/docs/en/sandboxing) we added `settings.json` with the following content:
-
-```
-{
-	"env": {
-    "INHERIT_FROM_SHELL": "true",
-    "GEMINI_API_KEY": "${GEMINI_API_KEY}"
-  },
-  "sandbox": {
-  "enabled": true,
-  }
-}
-```
-
-#### Agent-Skills
-
-The `create-svg-from-prompt` already exists in the repo and is ready to use:
-
-```
-.claude/skills/create-svg-from-prompt/SKILL.md
-```
-
-### Container-Use
-
-[Container-Use](https://container-use.com/quickstart), from Docker creator Solomon Hykes, allows you to isolate and sandbox your work so that gen/ai doesn't mess with your computer directly. It also allows you to run multiple experiments in parallel and merge back the results you want to keep. We set it up using the following instructions:
-
-```
-brew install dagger/tap/container-use
-```
-
-Here we add the Container-Use MCP server to Claude-Code.
-
-```
-claude mcp add  --scope project container-use -- container-use stdio
-```
-
-Here we update the Claude-Code context to include instructions that make Container-Use more effective.
-
-```
-curl https://raw.githubusercontent.com/dagger/container-use/main/rules/agent.md >> CLAUDE.md
-```
-
-Now we need to setup the Gemini API key:
-
-```
-container-use config env set GEMINI_API_KEY <the key value>
-```
-
-## Run It!
-
-Invoke Claude-Code with Container-Use protections. (Container-Use will prompt you to verify each operation before execution,  preventing unintended actions by the AI agent.)
-
-```
-claude --allowedTools mcp__container-use__environment_checkpoint,mcp__container-use__environment_create,mcp__container-use__environment_add_service,mcp__container-use__environment_file_delete,mcp__container-use__environment_file_list,mcp__container-use__environment_file_read,mcp__container-use__environment_file_write,mcp__container-use__environment_open,mcp__container-use__environment_run_cmd,mcp__container-use__environment_update
-```
-
-At the prompt type:
-
-> Generate an SVG of a pelican riding a bicycle.
 
 ## How It Works
 
@@ -145,6 +84,94 @@ When you prompt "Generate an SVG of a pelican riding a bicycle":
 The path fitting step is where computational irreducibility matters most:  there's no way to predict optimal SVG paths without actually running the  iterative curve-fitting algorithm. Gemini provides the spatial intelligence  (trained on spatially correct images to understand what a "pelican on a  bicycle" looks like), while autotrace handles the computational optimization  (fitting precise Bezier curves to the bitmap pixels).
 
 This multi-step approach solves what single-model LLMs cannot: generating geometrically valid, visually accurate SVGs for complex spatial prompts.
+
+## How to Build This Skill
+
+If you want to build the skill from scratch, then follow these instructions.
+
+The setup uses Docker, [Container-Use](https://container-use.com/), Claude-Code [agent-skills](https://code.claude.com/docs/en/skills#agent-skills) and Claude-Code [sandboxing](https://code.claude.com/docs/en/sandboxing#sandboxing). Only the installation of Docker is platform dependent, this skill will work consistently on MacOS, Windows and Linux due to the use of `container-use` which not only sandboxes Claude Code from your local machine, it standardizes on Linux to run.
+
+### Sandboxing
+
+To enable Claude-Code [sandboxing](https://code.claude.com/docs/en/sandboxing) we added `.claude/settings.json` with the following content:
+
+```
+{
+  "env": {
+    "INHERIT_FROM_SHELL": "true",
+  },
+  "sandbox": {
+    "enabled": true
+  }
+}
+```
+
+### Agent-Skills
+
+To create the `create-svg-from-prompt` add the following to `.claude/skills/create-svg-from-prompt/SKILL.md`:
+
+````text
+---
+name: create-svg-from-prompt
+description: Generate an SVG of a user-requested image or scene
+---
+
+## Setup
+
+if `autotrace` is not available in the environment, then install it with the following command:
+
+```bash
+sudo apt update
+sudo apt install git build-essential intltool imagemagick libmagickcore-dev pstoedit libpstoedit-dev autopoint
+git clone https://github.com/autotrace/autotrace.git
+cd autotrace
+./autogen.sh
+LD_LIBRARY_PATH=/usr/local/lib ./configure --prefix=/usr
+make
+sudo make install
+```
+
+## Core Workflow
+
+When the user prompts the model to generate an SVG of and image or scene:
+
+### User wants an SVG of an image or scene
+
+To generate an SVG of an image or scene use Google Gemini and autotrace:
+
+```bash
+curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent" -H "x-goog-api-key: <GEMINI_API_KEY>" -H "Content-Type: application/json" -d '{ "contents": [{ "parts": [ {"text": "<IMAGE_PROMPT>"}]}]}' | grep -o '"data": "[^"]*"' | cut -d'"' -f4 | base64 --decode | autotrace -output-format svg -despeckle-level 10 -despeckle-tightness 2.0 -output-file <OUTPUT_FILE>.svg
+```
+
+**Arguments from prompt:**
+- `<GEMINI_API_KEY>`: The Gemini API key gotten from the environment variable "GEMINI_API_KEY"
+- `<IMAGE_PROMPT>`: The user's initial prompt modified to change phrases like "Generate an svg" to "Generate an image." Do not modify the rest of the prompt or add any extra instructions or descriptions.
+- `<OUTPUT_FILE>`: An 8-30 character filename based on the image the user wants
+
+````
+
+> [!NOTE]
+> This skill passes the Gemini API key to curl via an environment variable setup in the `container-use` configs setup above.
+
+### Run It!
+
+Invoke Claude-Code with Container-Use protections. (Container-Use will prompt you to verify each operation before execution,  preventing unintended actions by the AI agent.)
+
+```
+claude --allowedTools mcp__container-use__environment_checkpoint,mcp__container-use__environment_create,mcp__container-use__environment_add_service,mcp__container-use__environment_file_delete,mcp__container-use__environment_file_list,mcp__container-use__environment_file_read,mcp__container-use__environment_file_write,mcp__container-use__environment_open,mcp__container-use__environment_run_cmd,mcp__container-use__environment_update
+```
+
+At the prompt type:
+
+> Generate an SVG of a pelican riding a bicycle.
+
+Once Claude Code finishes the task, the output results will live in the git worktree Container-Use created. If you're impatient and don't want to figure out how to use Container-Use, you can go to the worktree's local directory to see the results: `file://~/.config/container-use/worktrees/<CONTAINER_USE_ENV_NAME>/<IMAGE_FILE_PATH_GIVEN_BY_CLAUDE>`. E.g. `file://~/.config/container-use/worktrees/guided-magpie/images/pelican-rides-bicycle.svg`.
+
+If you want to use Container-Use properly, you can git merge the output file to the local git repo with this command:
+
+```bash
+cu apply <CONTAINER_USE_ENV_NAME>
+```
 
 ## More Examples
 
