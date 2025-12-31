@@ -31,7 +31,7 @@ Wolfram writes:
 >
 > And in the end there’s just a fundamental tension between  learnability and computational irreducibility. Learning involves in  effect [compressing data by leveraging regularities](https://www.wolframscience.com/nks/chap-10--processes-of-perception-and-analysis/). But computational irreducibility implies that ultimately there’s a limit to what regularities there may be.
 
-The essay, and especially that section, suggests that transformers are good language processors, for a generally intelligent machine it's not enough. Perhaps tools and agents are a partial way forward: if we combined them in clever ways we can make new gains on currently unsolvable problems.
+The essay, and especially that section, suggests that transformers are good language processors, but for a generally intelligent machine it's not enough. Perhaps tools and agents are a partial way forward: if we combined them in clever ways we can make new gains on currently unsolvable problems.
 
 ## How to Use This Skill
 
