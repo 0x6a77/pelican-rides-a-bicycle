@@ -11,20 +11,19 @@ LLMs typically produce broken SVGs for complex spatial tasks—overlapping
 geometry, impossible proportions, physically implausible compositions. This 
 happens because LLMs predict tokens but don't *compute* spatial relationships.
 
-The `create-svg-from-prompt` skill solves this by combining:
-1. Image generation capability (Google Gemini)
-2. Natural language understanding (Claude Code)
-3. Iterative validation and refinement (computational tools)
+We can see this when we ask Claude Sonnet to generate this SVG directly:
 
-This demonstrates that tool-augmented AI can tackle problems requiring actual 
-computation, not just pattern matching.
+![pelican-rides-a-bicycle](./images/claude-3-5-sonnet-20240620.svg)
 
 ### Underlying Idea
 
-This repo combines two simple ideas in a Claude-Code skill to accomplish an otherwise difficult LLM task:
+This repo combines simple ideas in a Claude-Code skill to accomplish an otherwise difficult LLM task:
 
-1. Join two models: Google Gemini and Claude Code
-2. Tool invocation to handle computational irreducibility (from this [2023 Stephen Wolfram essay](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/#surely-a-network-thats-big-enough-can-do-anything))
+1. Natural language understanding (Claude Code)
+2. Image generation capability (Google Gemini)
+3. Tool invocation to handle computational irreducibility (from this [2023 Stephen Wolfram essay](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/#surely-a-network-thats-big-enough-can-do-anything))
+
+This demonstrates that tool-augmented AI can tackle computationally irreducible problems like spatial intelligence via iterative computation (vectoring tracing), not just pattern matching (LLM/transformer).
 
 Wolfram writes:
 
@@ -32,11 +31,27 @@ Wolfram writes:
 >
 > And in the end there’s just a fundamental tension between  learnability and computational irreducibility. Learning involves in  effect [compressing data by leveraging regularities](https://www.wolframscience.com/nks/chap-10--processes-of-perception-and-analysis/). But computational irreducibility implies that ultimately there’s a limit to what regularities there may be.
 
-The essay, and especially that section, suggests that maybe LLMs are a language processor, but for a generally intelligent machine it's not enough. Perhaps tools and agents are a partial way forward: if we combined them in clever ways we can make new gains on currently unsolvable problems.
+The essay, and especially that section, suggests that transformers are good language processors, for a generally intelligent machine it's not enough. Perhaps tools and agents are a partial way forward: if we combined them in clever ways we can make new gains on currently unsolvable problems.
 
-## Setup
+## How to Use This Skill
 
-This repo uses [Docker](https://formulae.brew.sh/formula/docker), [Container-Use](https://container-use.com/), Claude-Code [agent-skills](https://code.claude.com/docs/en/skills#agent-skills) and Claude-Code [sandboxing](https://code.claude.com/docs/en/sandboxing#sandboxing). These instructions are for macOS because that is the only system I can verify. Linux and Windows installs will be similar and easy to figure out.
+To try the skill for yourself, you can simply clone this repo and run Claud Code in the cloned directory.
+
+```bash
+git clone https://github.com/0x6a77/pelican-rides-a-bicycle
+
+cd pelican-rides-a-bicycle
+
+claude --allowedTools mcp__container-use__environment_checkpoint,mcp__container-use__environment_create,mcp__container-use__environment_add_service,mcp__container-use__environment_file_delete,mcp__container-use__environment_file_list,mcp__container-use__environment_file_read,mcp__container-use__environment_file_write,mcp__container-use__environment_open,mcp__container-use__environment_run_cmd,mcp__container-use__environment_update
+```
+
+Then at the prompt, type `Generate an SVG of a pelican riding a bicycle`
+
+## How to Build This Skill
+
+These instruction show how we built the Claude Code skill from scratch.
+
+The setup uses [Docker](https://formulae.brew.sh/formula/docker), [Container-Use](https://container-use.com/), Claude-Code [agent-skills](https://code.claude.com/docs/en/skills#agent-skills) and Claude-Code [sandboxing](https://code.claude.com/docs/en/sandboxing#sandboxing). Only the installation of Docker is platform dependent, this skill will work consistently on MacOS, Windows and Linux due to the use of `container-use` which not only sandboxes Claude Code from your local machine, it standardizes on Linux to run.
 
 ### Docker
 
