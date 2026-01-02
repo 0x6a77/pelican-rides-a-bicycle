@@ -175,9 +175,9 @@ cu apply <CONTAINER_USE_ENV_NAME>
 
 ## More Examples
 
-### Near Pelican Point
+### Near Pigeon Point
 
-> Generate an SVG of a pelican riding a bicycle with a basket of fish and no helmet during the day in half moon bay near pigeon point lighthouse. Make it photorealistic and accurate to the half moon bay area.
+> Generate an SVG of a pelican riding a bicycle with a basket of fish and no helmet during the day near pigeon point lighthouse. Make it photorealistic and accurate to the half moon bay area.
 
 ![pelican-rides-a-bicycle](./images/pelican-fish-basket.svg)
 
